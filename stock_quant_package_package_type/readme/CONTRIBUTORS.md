@@ -1,0 +1,5 @@
+- Jacques-Etienne Baudoux <je@bcim.be>
+- Akim Juillerat <akim.juillerat@camptocamp.com>
+- Guewen Baconnier <guewen.baconnier@camptocamp.com>
+- Denis Roussel <denis.roussel@acsone.eu>
+- Alexandre Fayolle <alexandre.fayolle@camptocamp.com>
