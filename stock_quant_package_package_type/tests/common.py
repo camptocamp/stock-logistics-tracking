@@ -76,13 +76,13 @@ class TestPackageTypeCommon(TransactionCase):
         )
 
     @classmethod
-    def _create_single_move(cls, product):
+    def _create_single_move(cls, product, quantity=2.0):
         picking_type = cls.warehouse.int_type_id
         move_vals = {
             "name": product.name,
             "picking_type_id": picking_type.id,
             "product_id": product.id,
-            "product_uom_qty": 2.0,
+            "product_uom_qty": quantity,
             "product_uom": product.uom_id.id,
             "location_id": cls.input_location.id,
             "location_dest_id": picking_type.default_location_dest_id.id,

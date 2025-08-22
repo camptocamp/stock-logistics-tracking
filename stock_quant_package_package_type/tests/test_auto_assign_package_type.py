@@ -87,3 +87,47 @@ class TestAutoAssignPackageType(TestPackageTypeCommon):
         picking.button_validate()
 
         self.assertFalse(first_package.package_type_id)
+
+    def test_auto_assign_packaging_pallet(self):
+        """
+        Test the auto assignation for package type from the quantity packaged
+        """
+
+        # Set a default package on the product
+        self.product.package_type_id = self.auto_assigned_package_type
+
+        confirmed_move = self._create_single_move(self.product, quantity=48)
+        confirmed_move.location_dest_id = self.pallet_location
+        confirmed_move._assign_picking()
+        self._update_qty_in_location(
+            confirmed_move.location_id,
+            confirmed_move.product_id,
+            confirmed_move.product_qty,
+        )
+        confirmed_move._action_assign()
+        picking = confirmed_move.picking_id
+        picking.action_confirm()
+        picking.move_line_ids.picked = True
+        first_package = picking.action_put_in_pack()
+
+        picking.button_validate()
+        self.assertEqual(
+            self.product_pallet_product_packaging.package_type_id,
+            first_package.package_type_id,
+        )
+
+    def test_find_best_packaging_pallet(self):
+        packaging = self.product._find_best_packaging(48)
+        self.assertEqual(packaging, self.product_pallet_product_packaging)
+
+    def test_find_best_packaging_cardbox(self):
+        packaging = self.product._find_best_packaging(4)
+        self.assertEqual(packaging, self.product_cardbox_product_packaging)
+
+    def test_find_best_packaging_single(self):
+        packaging = self.product._find_best_packaging(5)
+        self.assertEqual(packaging, self.product_single_bag_product_packaging)
+
+    def test_find_best_packaging_no_match(self):
+        packaging = self.product._find_best_packaging(5.5)
+        self.assertFalse(packaging)

@@ -47,6 +47,9 @@ class StockQuantPackage(models.Model):
                 # (we are delivering them, not storing them)
                 continue
             package_type = package.single_product_id.package_type_id
-            if not package_type:
-                continue
+            best_packaging = package.single_product_id._find_best_packaging(
+                package.single_product_qty
+            )
+            if best_packaging.package_type_id:
+                package_type = best_packaging.package_type_id
             package.package_type_id = package_type
