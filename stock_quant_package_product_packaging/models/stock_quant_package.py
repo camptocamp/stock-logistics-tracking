@@ -90,5 +90,7 @@ class StockQuantPackage(models.Model):
                 package.package_type_id = product.package_type_id
 
     def _reset_empty_package_package_type(self):
-        empty_packages = self.filtered(lambda rec: not rec.quant_ids)
+        empty_packages = self.filtered(
+            lambda rec: not rec.quant_ids and rec.package_use == "disposable"
+        )
         empty_packages.package_type_id = False
