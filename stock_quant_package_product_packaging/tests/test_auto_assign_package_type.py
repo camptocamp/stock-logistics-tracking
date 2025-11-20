@@ -51,7 +51,7 @@ class TestAutoAssignPackageType(TestPackageTypeCommon):
             {
                 "name": "TEST",
                 "product_packaging_id": self.product_packaging.id,
-                "package_use": "reusable",
+                "reset_package_type": False,
             }
         )
         self._update_qty_in_location(
